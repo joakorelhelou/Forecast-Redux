@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchWeather } from '../actions/index'
+import { fetchWeather, clearWeather } from '../actions/index'
 
 class SearchBar extends Component {
     constructor(props) {
@@ -10,11 +10,11 @@ class SearchBar extends Component {
         this.state = { term: '' };
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.onClearBtnClick = this.onClearBtnClick.bind(this);
 
     }
 
     onInputChange(event) {
-        console.log(event.target.value);
         this.setState({ term: event.target.value });
     }
 
@@ -25,6 +25,10 @@ class SearchBar extends Component {
         this.props.fetchWeather(this.state.term);
         this.setState({ term: '' })
 
+    }
+
+    onClearBtnClick(event) {
+        this.props.clearWeather();
     }
 
     render() {
@@ -39,13 +43,16 @@ class SearchBar extends Component {
                 <span className="input-group-btn">
                     <button type="submit" className="btn btn-secoundary">Search</button>
                 </span>
+                <span className="input-group-btn">
+                    <button onClick={this.onClearBtnClick} type="button" className="btn btn-danger">Clear</button>
+                </span>
             </form>
         )
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchWeather }, dispatch)
+    return bindActionCreators({ fetchWeather, clearWeather }, dispatch)
 }
 
 //null because we don't need state here
